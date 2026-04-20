@@ -124,7 +124,6 @@ const SolutionSection = () => {
               <div className="process-steps">
                 {processSteps.map((step, index) => (
                   <div key={index} className="process-step">
-                    <div className="step-number">{step.number}</div>
                     <div className="step-content">
                       <h4 className="step-title">{step.title}</h4>
                       <p className="step-description">{step.description}</p>
