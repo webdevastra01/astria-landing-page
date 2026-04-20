@@ -240,6 +240,10 @@
   background: var(--bg-secondary);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .cta-text {
