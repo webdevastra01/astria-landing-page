@@ -1,8 +1,17 @@
 import { useState } from "react";
 import "../styles/ServicesSection.css";
+import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const ServicesSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmit = async (formData: any) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("Quote request submitted:", formData);
+    // Handle success (toast, redirect, etc.)
+  };
 
   const services = [
     {
@@ -197,7 +206,12 @@ const ServicesSection = () => {
         {/* Bottom CTA */}
         <div className="services-cta">
           <p className="cta-text">Not sure which coverage you need?</p>
-          <button className="btn btn-primary btn-lg">
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
             <svg
               className="btn-icon"
               viewBox="0 0 24 24"
@@ -211,6 +225,11 @@ const ServicesSection = () => {
           </button>
         </div>
       </div>
+      <InsuranceQuoteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmit}
+      />
     </section>
   );
 };

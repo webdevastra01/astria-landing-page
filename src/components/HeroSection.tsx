@@ -1,6 +1,17 @@
+import { useState } from "react";
 import "../styles/HeroSection.css";
+import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const HeroSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmit = async (formData: any) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("Quote request submitted:", formData);
+    // Handle success (toast, redirect, etc.)
+  };
+
   return (
     <section className="hero-section">
       <div className="container">
@@ -41,7 +52,12 @@ const HeroSection = () => {
             </p>
 
             <div className="hero-cta">
-              <button className="btn btn-primary btn-lg">
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
                 Get Your Free Protection Review
                 <svg
                   className="btn-icon"
@@ -248,6 +264,11 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+      <InsuranceQuoteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmit}
+      />
     </section>
   );
 };

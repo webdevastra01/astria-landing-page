@@ -1,6 +1,17 @@
+import { useState } from "react";
 import "../styles/ProblemSection.css";
+import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const ProblemSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmit = async (formData: any) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("Quote request submitted:", formData);
+    // Handle success (toast, redirect, etc.)
+  };
+
   const problems = [
     {
       icon: (
@@ -138,7 +149,7 @@ const ProblemSection = () => {
           <p className="cta-text">
             Don't wait for a crisis to discover your coverage gaps.
           </p>
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={() => {setIsModalOpen(true)}}>
             Get Your Protection Assessment
             <svg
               className="btn-icon"
@@ -152,6 +163,11 @@ const ProblemSection = () => {
           </button>
         </div>
       </div>
+      <InsuranceQuoteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmit}
+      />
     </section>
   );
 };
