@@ -305,7 +305,11 @@
   }
 
   .step-connector {
-    top: 140px;
-    left: 170px;
+    top: 120px;
+    left: 140px;
+  }
+
+  .solution-cta {
+    align-self: center;
   }
 }

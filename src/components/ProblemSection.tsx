@@ -4,25 +4,50 @@ import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const ProblemSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (formData: any) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Quote request submitted:", formData);
-    // Handle success (toast, redirect, etc.)
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/insurance-quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit quote request");
+      }
+    } catch (error) {
+      console.error("Quote submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const problems = [
     {
       icon: (
         <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-circle-alert-icon lucide-circle-alert"
         >
-          <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          <path d="M12 2v2m0 16v2M2 12h2m16 0h2" strokeOpacity="0.3" />
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
         </svg>
       ),
       tag: "Income Risk",
@@ -37,16 +62,21 @@ const ProblemSection = () => {
     {
       icon: (
         <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-file-xcorner-icon lucide-file-x-corner"
         >
-          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          <path d="M15 2v6h6" />
-          <circle cx="9" cy="9" r="1" fill="currentColor" />
-          <circle cx="9" cy="13" r="1" fill="currentColor" />
-          <path d="M3 3l18 18" strokeLinecap="round" />
+          <path d="M11 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5" />
+          <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+          <path d="m15 17 5 5" />
+          <path d="m20 17-5 5" />
         </svg>
       ),
       tag: "Coverage Gaps",
@@ -59,14 +89,19 @@ const ProblemSection = () => {
     {
       icon: (
         <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-clock-icon lucide-clock"
         >
           <circle cx="12" cy="12" r="10" />
           <path d="M12 6v6l4 2" />
-          <path d="M12 2v2m0 16v2M2 12h2m16 0h2" strokeOpacity="0.3" />
         </svg>
       ),
       tag: "Decision Paralysis",
@@ -121,15 +156,24 @@ const ProblemSection = () => {
 
               {problem.consequence && (
                 <div className="consequence-box">
-                  <svg
-                    className="consequence-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
+                  <div className="consequence-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-triangle-alert-icon lucide-triangle-alert"
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                      <path d="M12 9v4" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                  </div>
                   <p>{problem.consequence}</p>
                 </div>
               )}
@@ -149,7 +193,12 @@ const ProblemSection = () => {
           <p className="cta-text">
             Don't wait for a crisis to discover your coverage gaps.
           </p>
-          <button className="btn btn-primary" onClick={() => {setIsModalOpen(true)}}>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
             Get Your Protection Assessment
             <svg
               className="btn-icon"
@@ -167,6 +216,7 @@ const ProblemSection = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
+        submitLabel={isSubmitting ? "Submitting..." : "Request Insurance Quote"}
       />
     </section>
   );

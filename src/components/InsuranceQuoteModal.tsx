@@ -13,13 +13,11 @@ interface InsuranceQuoteModalProps {
 
 const DEFAULT_INSURANCE_OPTIONS = [
   "Life Insurance",
-  "Health Insurance",
-  "Motor / Vehicle",
-  "Home / Property",
+  "Health & Critical Illness Insurance",
+  "Accident Insurance",
+  "Motor / Vehicle Insurance",
+  "Property & Fire Insurance",
   "Business Insurance",
-  "Travel Insurance",
-  "Gadget Insurance",
-  "Others",
 ];
 
 const InsuranceQuoteModal = ({
@@ -36,6 +34,7 @@ const InsuranceQuoteModal = ({
 
   const [formData, setFormData] = useState({
     fullName: "",
+    email: "",
     contactNumber: "",
     insuranceType: "",
     description: "",
@@ -114,6 +113,7 @@ const InsuranceQuoteModal = ({
       await onSubmit?.(formData);
       setFormData({
         fullName: "",
+        email: "",
         contactNumber: "",
         insuranceType: "",
         description: "",
@@ -189,6 +189,21 @@ const InsuranceQuoteModal = ({
               value={formData.fullName}
               onChange={handleChange}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">
+              Email <span className="form-required">*</span>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              className="form-input"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
 

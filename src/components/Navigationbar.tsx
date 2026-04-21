@@ -7,6 +7,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,11 +18,50 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [isModalOpen]);
+
   const handleSubmit = async (formData: any) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Quote request submitted:", formData);
-    // Handle success (toast, redirect, etc.)
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/insurance-quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit quote request");
+      }
+
+      // Success feedback
+      alert(
+        "✅ Quote request submitted! Our team will contact you within 24 hours.",
+      );
+
+      // Optional: Track conversion
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "quote_request", {
+          insurance_type: formData.insuranceType,
+        });
+      }
+    } catch (error) {
+      console.error("Quote submission error:", error);
+      alert(
+        "❌ Something went wrong. Please try again or call us at 0912 967 6049.",
+      );
+      throw error; // Re-throw so modal stays open on error
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -144,7 +184,7 @@ const Navbar = () => {
             </li>
             <li className="mobile-cta">
               <button
-                onClick={() => scrollToSection("contact")}
+                onClick={() => setIsModalOpen(true)}
                 className="btn btn-primary btn-lg"
               >
                 Get Free Protection Review
@@ -158,6 +198,7 @@ const Navbar = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
+        submitLabel={isSubmitting ? "Submitting..." : "Request Insurance Quote"}
       />
     </>
   );

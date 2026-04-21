@@ -4,24 +4,49 @@ import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const SolutionSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (formData: any) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Quote request submitted:", formData);
-    // Handle success (toast, redirect, etc.)
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/insurance-quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit quote request");
+      }
+    } catch (error) {
+      console.error("Quote submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const benefits = [
     {
       icon: (
         <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-badge-check-icon lucide-badge-check"
         >
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+          <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+          <path d="m9 12 2 2 4-4" />
         </svg>
       ),
       text: "Protect your income and financial future",
@@ -208,6 +233,7 @@ const SolutionSection = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
+        submitLabel={isSubmitting ? "Submitting..." : "Request Insurance Quote"}
       />
     </section>
   );

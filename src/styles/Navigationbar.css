@@ -263,6 +263,10 @@
   cursor: pointer;
   padding: var(--space-2);
   z-index: 60;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
 }
 
 .hamburger {
@@ -272,38 +276,43 @@
   background: var(--text-primary);
   position: relative;
   transition: all var(--transition-base);
+  /* Ensure the main line is perfectly centered */
+  margin: 0 auto;
 }
 
 .hamburger::before,
 .hamburger::after {
   content: "";
   position: absolute;
+  left: 0;
   width: 24px;
   height: 2px;
   background: var(--text-primary);
   transition: all var(--transition-base);
 }
 
+/* Position lines using transform instead of top (more precise) */
 .hamburger::before {
-  top: -7px;
+  top: 0;
+  transform: translateY(-7px);
 }
 
 .hamburger::after {
-  top: 7px;
+  top: 0;
+  transform: translateY(7px);
 }
 
+/* Open state - X transformation */
 .hamburger.open {
   background: transparent;
 }
 
 .hamburger.open::before {
-  transform: rotate(45deg);
-  top: 0;
+  transform: translateY(0) rotate(45deg);
 }
 
 .hamburger.open::after {
-  transform: rotate(-45deg);
-  top: 0;
+  transform: translateY(0) rotate(-45deg);
 }
 
 /* ========================================

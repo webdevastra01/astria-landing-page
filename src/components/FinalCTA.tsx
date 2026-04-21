@@ -4,12 +4,30 @@ import InsuranceQuoteModal from "./InsuranceQuoteModal";
 
 const FinalCTA = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (formData: any) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Quote request submitted:", formData);
-    // Handle success (toast, redirect, etc.)
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/insurance-quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit quote request");
+      }
+    } catch (error) {
+      console.error("Quote submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -109,6 +127,7 @@ const FinalCTA = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
+        submitLabel={isSubmitting ? "Submitting..." : "Request Insurance Quote"}
       />
     </section>
   );
