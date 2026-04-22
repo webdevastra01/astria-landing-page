@@ -1,0 +1,120 @@
+.reviews-section {
+  padding: var(--space-24) var(--space-6);
+  background: var(--bg-elevated);
+  position: relative;
+  overflow: hidden;
+}
+
+.reviews-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-light),
+    transparent
+  );
+}
+
+.reviews-section .container {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Header - matches HowItWorks pattern */
+.reviews-section .section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-16);
+}
+
+.reviews-section .section-label {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background: var(--primary-subtle);
+  color: var(--primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--primary-border);
+}
+
+.reviews-section .section-title {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+}
+
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.reviews-section .section-subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* Reviews Widget */
+.reviews-widget {
+  background: linear-gradient(
+    180deg,
+    var(--bg-secondary) 0%,
+    var(--bg-primary) 100%
+  );
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.reviews-widget:hover {
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-default);
+}
+
+.elfsight-app-abc12345 {
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .reviews-section {
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .reviews-section .section-title {
+    font-size: var(--text-3xl);
+  }
+
+  .reviews-widget {
+    padding: var(--space-6) var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-section .section-title {
+    font-size: var(--text-2xl);
+  }
+}

@@ -2,6 +2,7 @@ import Contact from "./components/Contact";
 import Differentiation from "./components/Differentiation";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
+import GoogleReviews from "./components/GoogleReviews";
 import HeroSection from "./components/HeroSection";
 import LeadMagnet from "./components/LeadMagnet";
 import Navbar from "./components/Navigationbar";
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <HeroSection />
       <SocialProofBar />
+      <GoogleReviews />
       <ProblemSection />
       <SolutionSection />
       <ServicesSection />
